@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordbrücken-Check · Bonn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #0A0A0A;
+  --dark:    #111111;
+  --card:    #181818;
+  --surface: #1F1F1F;
+  --border:  rgba(255,255,255,0.08);
+  --border-gold: rgba(212,175,55,0.35);
+  --gold:    #D4AF37;
+  --gold-dim: rgba(212,175,55,0.18);
+  --gold-glow: rgba(212,175,55,0.06);
+  --text:    #F0EDE6;
+  --text-mid:#A09880;
+  --text-dim: #5A5448;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.1);
+  --radius: 14px;
+  --radius-lg: 20px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--black);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+}
+
+/* Radial glow behind content */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Subtle grid texture */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.hero-bridge {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem 1.5rem 220px;
+  max-width: 680px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border-gold);
+  background: var(--gold-dim);
+  border-radius: 99px;
+  padding: 0.4rem 1rem;
+  margin-bottom: 1.75rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 1.25rem;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-sub {
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  font-weight: 300;
+  color: var(--text-mid);
+  line-height: 1.8;
+  max-width: 480px;
+  margin: 0 auto 2.5rem;
+}
+
+/* Glass button */
+.hero-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--gold);
+  color: var(--black);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 2.2rem;
+  border-radius: 99px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 0 30px rgba(212,175,55,0.25);
+}
+.hero-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 45px rgba(212,175,55,0.4);
+  background: #E8C53A;
+}
+
+.hero-meta {
+  margin-top: 1.25rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+
+/* ─── QUIZ HEADER ─── */
+#quiz-section { display: none; min-height: 100svh; background: var(--black); padding-bottom: 5rem; }
+
+.quiz-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1.5rem;
+  display: flex; align-items: center; gap: 1.25rem;
+}
+
+.quiz-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.progress-wrap { flex: 1; max-width: 400px; display: flex; flex-direction: column; gap: 5px; }
+
+.progress-track {
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #F0D060);
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px rgba(212,175,55,0.5);
+}
+.progress-text { font-size: 0.7rem; color: var(--text-dim); text-align: right; letter-spacing: 0.06em; }
+
+/* ─── QUESTION CARD – glass ─── */
+.quiz-body { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem; }
+
+.question-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  /* Glass effect */
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 20px 60px rgba(0,0,0,0.5);
+}
+
+.question-top {
+  padding: 1.75rem 1.75rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+/* Gold accent line left */
+.question-top::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 1.5rem; bottom: 1.5rem;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  border-radius: 0 2px 2px 0;
+}
+
+.q-number {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.65rem;
+}
+
+.q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.05rem, 3vw, 1.3rem);
+  color: #fff;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.question-bottom { padding: 1.25rem 1.5rem 1.5rem; }
+
+.options-grid { display: flex; flex-direction: column; gap: 0.55rem; }
+
+.option-btn {
+  display: flex; align-items: center; gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--text-mid);
+  line-height: 1.5;
+  width: 100%;
+  transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.1s;
+}
+.option-btn:hover:not(.selected) {
+  border-color: rgba(212,175,55,0.3);
+  background: rgba(212,175,55,0.05);
+  color: var(--text);
+  transform: translateX(4px);
+}
+.option-btn.selected {
+  border-color: var(--gold);
+  background: rgba(212,175,55,0.1);
+  color: #fff;
+}
+
+.opt-indicator {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+}
+.option-btn.selected .opt-indicator { border-color: var(--gold); background: var(--gold); }
+.opt-check {
+  width: 7px; height: 7px; background: var(--black);
+  border-radius: 50%; opacity: 0; transition: opacity 0.15s;
+}
+.option-btn.selected .opt-check { opacity: 1; }
+
+/* ─── NAV ─── */
+.quiz-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+.btn-back {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-mid);
+  font-size: 0.87rem; font-family: 'Inter', sans-serif;
+  padding: 0.65rem 1.25rem;
+  border-radius: 99px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn-back:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: var(--text); }
+.btn-back:disabled { opacity: 0.25; cursor: default; }
+
+.btn-skip {
+  font-size: 0.8rem; color: var(--text-dim);
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  text-decoration: underline; text-underline-offset: 3px;
+  padding: 0.5rem;
+  transition: color 0.15s;
+}
+.btn-skip:hover { color: var(--text-mid); }
+
+.btn-next {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--black);
+  border: none; font-size: 0.9rem; font-weight: 600;
+  font-family: 'Inter', sans-serif; letter-spacing: 0.03em;
+  padding: 0.72rem 1.75rem; border-radius: 99px; cursor: pointer;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 20px rgba(212,175,55,0.2);
+}
+.btn-next:hover:not(:disabled) { background: #E8C53A; transform: translateY(-1px); box-shadow: 0 0 30px rgba(212,175,55,0.35); }
+.btn-next:disabled { opacity: 0.3; cursor: default; transform: none; box-shadow: none; }
+
+/* ─── RESULT ─── */
+#result-section { display: none; background: var(--black); min-height: 100svh; }
+
+.result-header {
+  padding: 3.5rem 1.5rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.result-header::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; height: 300px;
+  background: radial-gradient(ellipse, rgba(212,175,55,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.result-eyebrow {
+  font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.result-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 6vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.result-position-name { color: var(--gold); font-style: italic; display: block; }
+
+/* ─── RESULT CARDS ─── */
+.result-body {
+  max-width: 720px; margin: 0 auto;
+  padding: 0 1.25rem 5rem;
+  position: relative; z-index: 2;
+}
+
+/* Glass card shared style */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.025) 100%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.07) inset, 0 20px 50px rgba(0,0,0,0.4);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.result-card-header {
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1.1rem;
+}
+
+.position-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+  border: 1px solid var(--border-gold);
+  background: rgba(212,175,55,0.12);
+}
+
+.result-card-body { padding: 1.5rem 1.75rem; }
+
+.result-desc {
+  font-size: 0.92rem; line-height: 1.8;
+  color: var(--text-mid); margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+.result-props { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.prop-tag {
+  font-size: 0.74rem; font-weight: 500;
+  padding: 0.32rem 0.85rem; border-radius: 99px;
+  background: rgba(212,175,55,0.12);
+  border: 1px solid rgba(212,175,55,0.25);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+/* Scores */
+.scores-title {
+  font-size: 0.67rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 1.5rem;
+  padding: 1.25rem 1.75rem 0;
+}
+
+.score-inner { padding: 0 1.75rem 1.5rem; }
+
+.score-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+.score-row:last-child { margin-bottom: 0; }
+
+.score-name {
+  width: 130px; font-size: 0.82rem; font-weight: 400;
+  flex-shrink: 0; color: var(--text-mid);
+  display: flex; align-items: center; gap: 0.4rem;
+}
+
+.score-track {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 99px; overflow: hidden;
+}
+.score-fill {
+  height: 100%; border-radius: 99px;
+  transition: width 0.9s cubic-bezier(0.4,0,0.2,1);
+}
+.score-pct { width: 40px; text-align: right; font-size: 0.8rem; font-weight: 500; flex-shrink: 0; }
+
+/* Answers accordion */
+.answers-toggle {
+  padding: 1rem 1.75rem;
+  font-size: 0.67rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.answers-toggle:hover { border-bottom-color: var(--border); }
+.answers-toggle svg { transition: transform 0.2s; }
+
+.answer-item {
+  padding: 0.9rem 1.75rem;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.answer-item.visible { display: block; }
+.answer-q { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 0.3rem; line-height: 1.5; }
+.answer-a { font-size: 0.87rem; color: var(--text); font-weight: 400; }
+.answer-skipped { font-size: 0.87rem; color: var(--text-dim); font-style: italic; }
+
+/* ─── ACTIONS ─── */
+.result-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.btn-restart {
+  flex: 1; min-width: 150px;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-mid);
+  font-size: 0.88rem; font-weight: 500; font-family: 'Inter', sans-serif;
+  padding: 0.75rem 1.5rem; border-radius: 99px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn-restart:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+.btn-share {
+  flex: 1; min-width: 150px;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: var(--gold); color: var(--black);
+  border: none; font-size: 0.88rem; font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  padding: 0.75rem 1.5rem; border-radius: 99px; cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 0 20px rgba(212,175,55,0.2);
+}
+.btn-share:hover { background: #E8C53A; box-shadow: 0 0 30px rgba(212,175,55,0.35); }
+
+.impressum-tab:hover {
+  background: rgba(212,175,55,0.25);
+  transform: rotate(180deg) translateX(-2px);
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.45s ease both; }
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 520px) {
+  .hero-content { padding-bottom: 180px; }
+  .quiz-logo { display: none; }
+  .score-name { width: 100px; font-size: 0.76rem; }
+  .result-actions { flex-direction: column; }
+  .btn-restart, .btn-share { min-width: unset; width: 100%; }
+  .question-top { padding: 1.4rem 1.25rem 1.2rem; }
+  .result-card-header { padding: 1.2rem 1.25rem; }
+  .result-card-body { padding: 1.2rem 1.25rem; }
+  .score-inner { padding: 0 1.25rem 1.25rem; }
+  .scores-title { padding: 1.25rem 1.25rem 0; }
+  .answers-toggle { padding: 1rem 1.25rem; }
+  .answer-item { padding: 0.85rem 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+  <footer style="text-align:center; padding:20px; font-size:12px; color:#A09880;">
+    <a href="#" onclick="openImpressum(); return false;" style="color:#A09880; text-decoration:underline;">
+      Impressum
+    </a>
+  </footer>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero" id="hero">
+
+  <!-- Accurate 2-pylon cable-stayed bridge silhouette of the Nordbrücke -->
+  <svg class="hero-bridge" viewBox="0 0 1440 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Water base -->
+    <rect x="0" y="190" width="1440" height="70" fill="#0D0D0D"/>
+    <!-- Water shimmer lines -->
+    <line x1="0" y1="195" x2="1440" y2="195" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>
+    <line x1="0" y1="205" x2="1440" y2="205" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
+    <line x1="0" y1="218" x2="1440" y2="218" stroke="rgba(212,175,55,0.03)" stroke-width="1"/>
+
+    <!-- Bridge deck / road surface -->
+    <rect x="0" y="178" width="1440" height="13" fill="#1A1A1A"/>
+    <!-- Deck gold highlight (top edge) -->
+    <line x1="0" y1="178" x2="1440" y2="178" stroke="rgba(212,175,55,0.25)" stroke-width="1.5"/>
+    <!-- Deck underside shadow -->
+    <line x1="0" y1="191" x2="1440" y2="191" stroke="rgba(0,0,0,0.6)" stroke-width="2"/>
+
+    <!-- ── LEFT PYLON (x=420) ── -->
+    <!-- Pylon shaft above deck -->
+    <rect x="414" y="30" width="12" height="148" fill="#222"/>
+    <!-- Pylon crossbar (H shape) -->
+    <rect x="400" y="90" width="40" height="8" fill="#222"/>
+    <!-- Pylon cap -->
+    <polygon points="414,30 420,18 426,30" fill="#2A2A2A"/>
+    <!-- Pylon gold outline glow -->
+    <rect x="414" y="30" width="12" height="148" fill="none" stroke="rgba(212,175,55,0.18)" stroke-width="0.5"/>
+
+    <!-- ── RIGHT PYLON (x=1020) ── -->
+    <rect x="1014" y="30" width="12" height="148" fill="#222"/>
+    <rect x="1000" y="90" width="40" height="8" fill="#222"/>
+    <polygon points="1014,30 1020,18 1026,30" fill="#2A2A2A"/>
+    <rect x="1014" y="30" width="12" height="148" fill="none" stroke="rgba(212,175,55,0.18)" stroke-width="0.5"/>
+
+    <!-- ── CABLES LEFT PYLON – fan from top (420,22) ── -->
+    <!-- Back cables (to the left) -->
+    <line x1="420" y1="22" x2="80"  y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="420" y1="22" x2="160" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="420" y1="22" x2="240" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="420" y1="22" x2="330" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <!-- Forward cables (to the right) -->
+    <line x1="420" y1="22" x2="510" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="420" y1="22" x2="600" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="420" y1="22" x2="690" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="420" y1="22" x2="720" y2="178" stroke="rgba(212,175,55,0.22)" stroke-width="1"/>
+
+    <!-- ── CABLES RIGHT PYLON – fan from top (1020,22) ── -->
+    <!-- Back cables (to the left) -->
+    <line x1="1020" y1="22" x2="720" y2="178" stroke="rgba(212,175,55,0.22)" stroke-width="1"/>
+    <line x1="1020" y1="22" x2="750" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="1020" y1="22" x2="840" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="1020" y1="22" x2="930" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <!-- Forward cables (to the right) -->
+    <line x1="1020" y1="22" x2="1110" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="1020" y1="22" x2="1200" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="1020" y1="22" x2="1290" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+    <line x1="1020" y1="22" x2="1360" y2="178" stroke="rgba(212,175,55,0.28)" stroke-width="1.2"/>
+
+    <!-- Pylon reflections in water -->
+    <line x1="420" y1="191" x2="420" y2="225" stroke="rgba(212,175,55,0.1)" stroke-width="8"/>
+    <line x1="1020" y1="191" x2="1020" y2="225" stroke="rgba(212,175,55,0.1)" stroke-width="8"/>
+
+    <!-- Cable reflections -->
+    <line x1="420" y1="191" x2="80"  y2="235" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
+    <line x1="420" y1="191" x2="240" y2="240" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
+    <line x1="1020" y1="191" x2="1200" y2="240" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
+    <line x1="1020" y1="191" x2="1360" y2="235" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
+
+    <!-- Gold gradient fade at bottom -->
+    <defs>
+      <linearGradient id="fadeBottom" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0A0A0A" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#0A0A0A" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="191" width="1440" height="69" fill="url(#fadeBottom)"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Nordbrückomat · Bonn 2025</div>
+    <h1>Die <em>Nordbrücke</em><br>— deine Meinung</h1>
+    <p class="hero-sub">Was sollte mit der Nordbrücke passieren? Beantworte 15 Fragen und finde deine Position.</p>
+    <button class="hero-start" onclick="startQuiz()">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Quiz starten
+    </button>
+    <p class="hero-meta">15 Fragen · ca. -5 Minuten weniger Lebenszeit</p>
+  </div>
+</section>
+
+<!-- ════════════════ QUIZ ════════════════ -->
+<section id="quiz-section">
+  <header class="quiz-header">
+    <div class="quiz-logo">Nordbrückomat</div>
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+      </div>
+      <div class="progress-text" id="progress-text">0 von 15</div>
+    </div>
+  </header>
+
+  <div class="quiz-body">
+    <div class="question-card fade-up" id="question-card">
+      <div class="question-top">
+        <div class="q-number" id="q-number">Frage 1 von 15</div>
+        <div class="q-text" id="q-text"></div>
+      </div>
+      <div class="question-bottom">
+        <div class="options-grid" id="options-grid"></div>
+      </div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn-back" id="btn-back" onclick="goBack()" disabled>
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Zurück
+      </button>
+      <button class="btn-skip" onclick="skipQuestion()">Überspringen</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()" disabled>
+        Weiter
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ RESULT ════════════════ -->
+<section id="result-section">
+  <div class="result-header">
+    <div class="result-eyebrow">Dein Ergebnis</div>
+    <div class="result-headline">
+      Du bist
+      <span class="result-position-name" id="r-name">–</span>
+    </div>
+  </div>
+
+  <div class="result-body">
+
+    <div class="glass-card">
+      <div class="result-card-header">
+        <div class="position-icon"><span id="r-icon">🏗️</span></div>
+        <div>
+          <div style="font-size:0.67rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.3rem;">Deine Position</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#fff;" id="r-title">–</div>
+        </div>
+      </div>
+      <div class="result-card-body">
+        <p class="result-desc" id="r-desc">–</p>
+        <div class="result-props" id="r-tags"></div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="scores-title">Übereinstimmung mit allen Positionen</div>
+      <div class="score-inner" id="score-bars"></div>
+    </div>
+
+    <div class="glass-card">
+      <div class="answers-toggle" onclick="toggleAnswers(this)">
+        Deine Antworten im Detail
+        <svg id="answers-chevron" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div id="answers-list"></div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-restart" onclick="restart()">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Neu starten
+      </button>
+      <button class="btn-share" onclick="shareResult()">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        Ergebnis teilen
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+<div id="impressum" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  color:#F0EDE6;
+  padding:40px;
+  overflow:auto;
+  z-index:9999;
+">
+  <h1>Impressum</h1>
+
+  <p><strong>Angaben gemäß § 5 TMG</strong></p>
+
+  <p>
+    Franz Kafsack<br>
+    Rudolf-Hahn-str.126<br>
+    53227 Bonn<br>
+    Deutschland
+  </p>
+
+  <p>E-Mail: kohle_schlummer3g@icloud.com</p>
+
+  <h2>Haftung</h2>
+  <p>
+    Keinerlei Garantie auf Richtigkeit der Inhalte.
+    Zu rein komödiantischen Zwecken erstellt.
+  </p>
+
+  <br>
+
+  <button onclick="closeImpressum()" style="
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#D4AF37;
+    cursor:pointer;
+  ">
+    Schließen
+  </button>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// FRAGEN
+// ══════════════════════════════════════════
+const QUESTIONS = [
+  {
+    text: "Auto fahren ist am besten",
+    options: [
+      { label: "Stimme voll zu – Auto fahren ist toll .", scores: { pro: 0, oeko: 3, alt: 1, wait: 2 } },
+      { label: "Stimme eher zu – Auto fahren ist ein bisschen toll.", scores: { pro: 0, oeko: 2, alt: 1, wait: 1 } },
+      { label: "Stimme eher nicht zu – Auto fahren ist nich ganz so toll.", scores: { pro: 0, oeko: 0, alt: 2, wait: 0 } },
+      { label: "Stimme gar nicht zu – Auto fahren ist gar nicht toll.", scores: { pro: 0, oeko: 0, alt: 1, wait: 0 } },
+    ]
+  },
+  {
+    text: "Fahrad fahren ist am besten",
+    options: [
+      { label: "Ja.", scores: { pro: 0, oeko: 0, alt: 3, wait: 1 } },
+      { label: "Eher ja – neue Straßen für Fahräder würden mich überzeugen.", scores: { pro: 0, oeko: 0, alt: 2, wait: 1 } },
+      { label: "Eher nein – Autos sind auch ein bisschen toll.", scores: { pro: 0, oeko: 2, alt: 1, wait: 2 } },
+      { label: "Nein – der Nutzen überwiegt die Emissionen deutlich.", scores: { pro: 0, oeko: 3, alt: 2, wait: 3 } },
+    ]
+  },
+  {
+    text: "Öffis sind am besten.",
+    options: [
+      { label: "Ja.", scores: { pro: 1, oeko: 0, alt: 3, wait: 1 } },
+      { label: "Eher ja – Straßenbahn muss manchmal sein.", scores: { pro: 1, oeko: 1, alt: 3, wait: 1 } },
+      { label: "Eher nein – Autos sind auch ein bisschen toll.", scores: { pro: 0, oeko: 2, alt: 1, wait: 2 } },
+      { label: "Nein – der Pkw-Verkehr muss im Vordergrund stehen.", scores: { pro: 0, oeko: 3, alt: 0, wait: 3 } },
+    ]
+  },
+  {
+    text: "Seid Angela Merkel nicht mehr Bundeskanzlerin ist geht alles den bach runter.",
+    options: [
+      { label: "Ja – Sie ist immernoch die Mutter Deutschlands.", scores: { pro: 0, oeko: 1, alt: 1, wait: 3 } },
+      { label: "Eher ja – vieles hat sie gut gemacht.", scores: { pro: 0, oeko: 0, alt: 1, wait: 3 } },
+      { label: "Eher nein – das Geld für ihr Gehalt wäre im ÖPNV besser investiert.", scores: { pro: 0, oeko: 0, alt: 1, wait: 0 } },
+      { label: "Nein.", scores: { pro: 2, oeko: 2, alt: 0, wait: 0 } },
+    ]
+  },
+  {
+  text: "Die Bonner Oper sollte erhalten bleiben",
+  options: [
+    { label: "Ja – Kultur gehört zu Bonn.", scores: { pro: 0, oeko: 0, alt: 3, wait: 2 } },
+    { label: "Eher ja – aber nicht um jeden Preis.", scores: { pro: 1, oeko: 0, alt: 2, wait: 1 } },
+    { label: "Eher nein – andere Projekte sind wichtiger.", scores: { pro: 1, oeko: 2, alt: 0, wait: 0 } },
+    { label: "Nein – die Oper sollte geschlossen werden.", scores: { pro: 2, oeko: 3, alt: 0, wait: 0 } },
+  ]
+},
+{
+  text: "Ich besitze ein Betonbauunternehmen",
+  options: [
+    { label: "Ja.", scores: { pro: 1, oeko:3, alt: 2, wait: 1 } },
+    { label: "Teilweise.", scores: { pro: 0, oeko: 2, alt: 1, wait: 0 } },
+    { label: "Eher nicht.", scores: { pro: 0, oeko: 0, alt: 0, wait: 0 } },
+    { label: "Nein.", scores: { pro: 0, oeko: 0, alt: 0, wait: 0 } },
+  ]
+},
+{
+  text: "Andy84 würde die Nordbrücke trotz Einsturzgefahr als lockere Feierabendrunde überqueren",
+  options: [
+    { label: "Ja, definitiv.", scores: { pro: 3, oeko: 0, alt: 0, wait: 0 } },
+    { label: "Wahrscheinlich schon.", scores: { pro: 2, oeko: 0, alt: 0, wait: 1 } },
+    { label: "Eher nicht.", scores: { pro: 1, oeko: 2, alt: 1, wait: 0 } },
+    { label: "Auf keinen Fall.", scores: { pro: 0, oeko:3, alt: 1, wait: 0 } },
+  ]
+},
+{
+  text: "Man sollte jedes Jahr an Silvester mindestens 500€ für böller ausgeben",
+  options: [
+    { label: "Ja – alles andere ist geizig.", scores: { pro: 3, oeko: 2, alt: 0, wait: 2 } },
+    { label: "Eher ja.", scores: { pro: 2, oeko: 0, alt: 0, wait: 1 } },
+    { label: "Eher nein.", scores: { pro: 0, oeko: 0, alt: 2, wait:  0} },
+    { label: "Nein.", scores: { pro: 0, oeko: 0, alt: 3, wait: 0 } },
+  ]
+},
+{
+  text: "grau ist eine schöne Farbe",
+  options: [
+    { label: "Ja, absolut.", scores: { pro: 1, oeko: 3, alt: 0, wait: 0 } },
+    { label: "Eher ja.", scores: { pro: 1, oeko: 2, alt: 0, wait: 1 } },
+    { label: "Eher nein.", scores: { pro: 0, oeko: 0, alt: 1, wait: 0 } },
+    { label: "Nein.", scores: { pro: 0, oeko: 0, alt: 3, wait: 0 } },
+  ]
+},
+{
+  text: "in China werden doch auch Brücken in wenigen wochen gebaut",
+  options: [
+    { label: "Ja – Deutschland sollte schneller werden.", scores: { pro: 0, oeko: 0, alt: 2, wait: 3 } },
+    { label: "Eher ja.", scores: { pro: 0, oeko: 0, alt: 1, wait: 2 } },
+    { label: "Eher nein – die Systeme sind schwer vergleichbar.", scores: { pro: 0, oeko: 0, alt: 2, wait: 1 } },
+    { label: "Nein.", scores: { pro: 0, oeko: 0, alt: 3, wait: 2 } },
+  ]
+},
+{
+  text: "früher war alles besser",
+  options: [
+    { label: "Ja.", scores: { pro: 1, oeko: 3, alt: 0, wait: 3 } },
+    { label: "Eher ja.", scores: { pro: 0, oeko: 2, alt: 1, wait: 2 } },
+    { label: "Eher nein.", scores: { pro: 1, oeko: 0, alt: 1, wait: 0 } },
+    { label: "Nein.", scores: { pro: 2, oeko: 1, alt: 0, wait: 0 } },
+  ]
+},
+{
+  text: "man sollte die nordbrücke mindestens 20 spurig ausbauen um dem zukünftigen Verkehrsfluss gerecht zu werden",
+  options: [
+    { label: "Ja, unbedingt.", scores: { pro: 2, oeko: 3, alt: 0, wait: 2 } },
+    { label: "Eher ja.", scores: { pro: 1, oeko: 2, alt: 0, wait: 1 } },
+    { label: "Eher nein.", scores: { pro: 0, oeko: 0, alt: 2, wait: 0 } },
+    { label: "Nein.", scores: { pro: 0, oeko: 0, alt: 3, wait: 0 } },
+  ]
+},
+{
+  text: "bonn braucht ein neues wahrzeichen",
+  options: [
+    { label: "Ja.", scores: { pro: 0, oeko: 2, alt: 3, wait: 1 } },
+    { label: "Eher ja.", scores: { pro: 0, oeko: 1, alt: 2, wait: 0 } },
+    { label: "Eher nein.", scores: { pro: 1, oeko: 0, alt: 0, wait: 1 } },
+    { label: "Nein.", scores: { pro: 2, oeko: 0, alt: 0, wait: 1 } },
+  ]
+},
+{
+  text: "man hätte Timmy (ist ein weiblicher Name) einfach sprengen sollen",
+  options: [
+    { label: "Stimme zu.", scores: { pro: 3, oeko: 0, alt: 0, wait: 0 } },
+    { label: "Vieleicht.", scores: { pro: 2, oeko: 0, alt: 0, wait: 0 } },
+    { label: "Ehr nicht.", scores: { pro: 0, oeko: 1, alt: 1, wait: 1 } },
+    { label: "Unangemessene Aussage.", scores: { pro: 0, oeko: 2, alt: 2, wait: 3 } },
+  ]
+},
+{
+  text: "Elon Musk hat sich jeden Cent hart erarbeitet",
+  options: [
+    { label: "Ja.", scores: { pro: 0, oeko: 2, alt: 0, wait: 3 } },
+    { label: "Eher ja.", scores: { pro: 0, oeko: 1, alt: 0, wait: 2 } },
+    { label: "Eher nein.", scores: { pro: 2, oeko: 0, alt: 1, wait: 0 } },
+    { label: "Nein.", scores: { pro: 3, oeko: 0, alt: 2, wait: 0 } },
+  ]
+}
+];   // <--- FEHLT
+
+
+
+
+// ══════════════════════════════════════════
+// POSITIONEN
+// ══════════════════════════════════════════
+
+const POSITIONS = {
+  pro: {
+    name: "Gig gesprengt ist geil",
+    icon: "🏗️",
+    barColor: "#D4AF37",
+    title: "Gig gesprengt ist geil",
+    desc: "Du siehst die sprengung der Nordbrücke als notwendige Infrastrukturmaßnahme für eine wachsende Region, Verkehrsentlastung, wirtschaftliche Vernetzung und die Zukunftsfähigkeit Bonns. Du bist bereit, Kosten und Bauzeit in Kauf zu nehmen, wenn die Sprengung klar belegt ist.",
+    tags: ["Infrastruktur", "Sprengen", "Konnektivität", "Pragmatismus"]
+  },
+  oeko: {
+    name: "Rheinzubetonierer",
+    icon: "🌿",
+    barColor: "#4CAF82",
+    title: "Rheinzubetonierer",
+    desc: "Für dich überwiegen die Nutzen deutlich den Klimafolgen. Du plädierst für einen konsequenten Umbau hin zu Beton – und siehst die Nordbrücke als Schritt in die falsche Richtung der Verkehrspolitik (viel zu schmal).",
+    tags: ["Klimaschutz", "Beton", "Mobilitätswende", "Ausbau"]
+  },
+  alt: {
+    name: "neue Oper Draufbauer",
+    icon: "🚋",
+    barColor: "#A0A0A0",
+    title: "neue oper draufbauer",
+    desc: "Du bist weder für noch gegen eine Brücke per se, aber du willst zuerst alle Alternativen ernsthaft prüfen: eine neue Oper. Eine reine Kfz-Brücke lehnst du ab – eine Operbrücke könntest du dir vorstellen.",
+    tags: ["Modern", "Kulturliebend", "Oper", "Innovativ"]
+  },
+  wait: {
+    name: "Angie wird es schon richten",
+    icon: "⚖️",
+    barColor: "#7A6C5D",
+    title: "angie wird es schon richten",
+    desc: "Du bist noch nicht überzeugt – weder von Pro- noch von Contra-Argumenten. Du willst belastbare Daten, unabhängige Gutachten und eine Meinug von ANgela Merkel, bevor eine Entscheidung fällt. Vorschnelle politische Festlegungen hältst du für riskant, es sei den sie stammen von Angie.",
+    tags: ["Daten abwarten", "Angela Merkel", "Bürgerdialog", "Keine Eile"]
+  },
+};
+
+// ══════════════════════════════════════════
+// LOGIK
+// ══════════════════════════════════════════
+let current = 0;
+let answers = Array(QUESTIONS.length).fill(null);
+
+function startQuiz() {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  window.scrollTo(0, 0);
+  render();
+}
+
+function render() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-number').textContent = `Frage ${current + 1} von ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.text;
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${current} von ${QUESTIONS.length}`;
+  document.getElementById('btn-back').disabled = current === 0;
+  document.getElementById('btn-next').disabled = answers[current] === null;
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-indicator"><span class="opt-check"></span></span><span>${opt.label}</span>`;
+    btn.onclick = () => selectOption(i);
+    grid.appendChild(btn);
+  });
+
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp 0.4s ease both';
+}
+
+function selectOption(i) {
+  answers[current] = i;
+
+  setTimeout(() => {
+    if (current < QUESTIONS.length - 1) {
+      current++;
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }, 150);
+}
+
+function goNext() {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (current > 0) { current--; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function skipQuestion() { answers[current] = null; goNext(); }
+
+function showResult() {
+  const totals = {};
+  Object.keys(POSITIONS).forEach(k => totals[k] = 0);
+  const maxPossible = QUESTIONS.length * 3;
+
+  QUESTIONS.forEach((q, qi) => {
+    if (answers[qi] !== null) {
+      const s = q.options[answers[qi]].scores;
+      Object.keys(s).forEach(k => { totals[k] = (totals[k] || 0) + s[k]; });
+    }
+  });
+
+  const best = Object.keys(totals).sort((a, b) => totals[b] - totals[a])[0];
+  const pos = POSITIONS[best];
+
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  document.getElementById('r-name').textContent = pos.name;
+  document.getElementById('r-title').textContent = pos.title;
+  document.getElementById('r-desc').textContent = pos.desc;
+  document.getElementById('r-icon').textContent = pos.icon;
+
+  document.getElementById('r-tags').innerHTML =
+    pos.tags.map(t => `<span class="prop-tag">${t}</span>`).join('');
+
+  const sorted = Object.keys(POSITIONS).sort((a, b) => totals[b] - totals[a]);
+  document.getElementById('score-bars').innerHTML = sorted.map(k => {
+    const p = POSITIONS[k];
+    const pct = Math.round((totals[k] / maxPossible) * 100);
+    return `<div class="score-row">
+      <div class="score-name"><span>${p.icon}</span><span>${p.name.split('·')[0].trim()}</span></div>
+      <div class="score-track"><div class="score-fill" style="width:${pct}%;background:${p.barColor}"></div></div>
+      <div class="score-pct" style="color:${p.barColor}">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('answers-list').innerHTML = QUESTIONS.map((q, qi) => {
+    const answered = answers[qi] !== null;
+    return `<div class="answer-item">
+      <div class="answer-q">Frage ${qi + 1} — ${q.text.substring(0, 65)}…</div>
+      ${answered
+        ? `<div class="answer-a">→ ${q.options[answers[qi]].label}</div>`
+        : `<div class="answer-skipped">übersprungen</div>`}
+    </div>`;
+  }).join('');
+}
+
+function toggleAnswers(header) {
+  const items = document.querySelectorAll('.answer-item');
+  const open = items[0].classList.contains('visible');
+  items.forEach(el => el.classList.toggle('visible', !open));
+  document.getElementById('answers-chevron').style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
+function restart() {
+  current = 0;
+  answers = Array(QUESTIONS.length).fill(null);
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('hero').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+function shareResult() {
+  if (navigator.share) {
+    navigator.share({ title: 'Nordbrücken-Check Bonn', text: 'Ich habe meine Position zur Bonner Nordbrücke herausgefunden!', url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => alert('Link kopiert!'));
+  }
+}
+
+function openImpressum() {
+  document.getElementById("impressum").style.display = "block";
+}
+
+function closeImpressum() {
+  document.getElementById("impressum").style.display = "none";
+}
+</script>
+</body>
+</html>
